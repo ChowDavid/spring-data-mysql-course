@@ -1,12 +1,12 @@
 package com.david.springData.mysql;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.Query;
 
+import com.david.springData.mysql.dao.BookQueryRepository;
 import com.david.springData.mysql.dao.BookRepository;
 import com.david.springData.mysql.model.Book;
 import com.david.springData.mysql.service.BookService;
@@ -18,6 +18,7 @@ public class Application {
 		 try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DataConfiguration.class)){
 			 BookService service=context.getBean(BookService.class);
 			 BookRepository repo=context.getBean(BookRepository.class);
+			 BookQueryRepository queryRepo = context.getBean(BookQueryRepository.class);
 //			Book book=new Book("First Book", new Date(), 33, new BigDecimal("26.00"));
 //			service.save(book);
 //			book.setBookId(null);
@@ -42,7 +43,12 @@ public class Application {
 //			repo.findByPageCountLessThanEqual(12);
 //			repo.findByPageCountBetween(10,200);
 //			repo.findTop5ByTitleLike("%Java%").forEach(b->System.out.println(b));
-			repo.findByAuthor_FirstName("Allan").forEach(b->System.out.println(b));
+//			repo.findByAuthor_FirstName("Allan").forEach(b->System.out.println(b));
+//			queryRepo.queryOne().forEach(b->System.out.println(b));
+			//queryRepo.queryTwo(100).forEach(b->System.out.println(b));
+			System.out.println(queryRepo.count());
+			//queryRepo.findAll(new PageRequest(3,3)).forEach(b->System.out.println(b));
+			queryRepo.queryOne(new PageRequest(3,3)).forEach(b->System.out.println(b));
 		 }
 		 
 		 
